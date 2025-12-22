@@ -17,40 +17,26 @@
     height: 100vh;
   }
 
-  /* ボタン */
   button {
-    position: fixed;
-    padding: 20px 50px;
-    font-size: 15px;
+    position: absolute;
+    padding: 14px 28px;
+    font-size: 14px;
     background: #000;
     color: #fff;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    display: none;
-    z-index: 10;
     white-space: nowrap;
-    transition: opacity .3s;
+    line-height: 1.5;
+    text-align: center;
   }
 
-  /* 距離表示 */
-  #distance {
-    position: fixed;
-    top: 14px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-    letter-spacing: .08em;
-    z-index: 30;
-  }
-
-  /* コメント */
   #comment {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 32px;
+    font-size: 28px;
     opacity: 0;
     pointer-events: none;
     transition: opacity .3s, transform .3s;
@@ -66,149 +52,136 @@
 </head>
 <body>
 
-<div id="distance">進行距離：0m</div>
-
-<button id="actionBtn"></button>
-<button id="growBtn">遠くする</button>
-<button id="shrinkBtn">短くする</button>
-
 <div id="comment"></div>
 <div id="tunnel"></div>
 
 <script>
   const tunnel = document.getElementById("tunnel");
   const comment = document.getElementById("comment");
-  const distanceEl = document.getElementById("distance");
-
-  const buttons = [
-    document.getElementById("actionBtn"),
-    document.getElementById("growBtn"),
-    document.getElementById("shrinkBtn")
-  ];
 
   let currentBtn = null;
-  let btnAppearScroll = 0;
-  let count = 0;
+  let baseScroll = 0;
+  let baseTop = 0;
 
-  const messages = [
-    "まだ終わらない",
-    "戻れない",
-    "進んだ気がした？",
-    "同じ場所だ",
-    "出口はない",
-    "よく押したな"
+  let pressCount = 0;
+  let lastKnownKm = 0;
+
+  const taunts = [
+    "押さなくていいよ",
+    "どうせ進むだけ",
+    "それ意味ある？",
+    "戻れないけど",
+    "見てるだけ？",
+    "まだやるの？",
+    "通り過ぎるんだ",
+    "ここ押す？"
   ];
 
-  /* セクション */
   function addSection() {
     const sec = document.createElement("div");
     sec.className = "section";
     tunnel.appendChild(sec);
   }
 
-  for (let i = 0; i < 4; i++) addSection();
+  for (let i = 0; i < 6; i++) addSection();
 
-  /* ランダム位置 */
-  function randomPos(btn) {
-    btn.style.left =
-      Math.random() * (innerWidth - btn.offsetWidth) + "px";
-    btn.style.top =
-      Math.random() * (innerHeight - btn.offsetHeight) + "px";
+  function kmNow() {
+    return scrollY / 1000;
   }
 
-  function showComment(text, time = 1800) {
-    comment.textContent = text;
+  function showComment(text, time = 2200) {
+    comment.innerHTML = text;
     comment.classList.add("show");
     setTimeout(() => comment.classList.remove("show"), time);
   }
 
-  /* ボタン出現 */
-  function showRandomButton() {
+  function spawnButton() {
     if (currentBtn) return;
 
-    const btn = buttons[Math.floor(Math.random() * buttons.length)];
-    randomPos(btn);
+    const btn = document.createElement("button");
 
-    btn.style.display = "block";
-    btn.style.opacity = 1;
-    btn.style.transform = "translateY(0)";
+    const types = ["distance", "record", "progress", "taunt"];
+    btn.dataset.type = types[Math.floor(Math.random() * types.length)];
 
-    btnAppearScroll = scrollY;
+    setButtonLabel(btn);
+
+    btn.style.left =
+      Math.random() * (innerWidth - 200) + "px";
+    btn.style.top =
+      scrollY + innerHeight * 0.6 + "px";
+
+    tunnel.appendChild(btn);
+
+    baseScroll = scrollY;
+    baseTop = btn.offsetTop;
+
+    btn.onclick = () => handleClick(btn);
+
     currentBtn = btn;
   }
 
-  /* スクロール処理 */
+  function setButtonLabel(btn) {
+    if (btn.dataset.type === "distance") {
+      btn.innerHTML = "押せ！！";
+    }
+    if (btn.dataset.type === "record") {
+      btn.innerHTML = "押せ！！";
+    }
+    if (btn.dataset.type === "progress") {
+      btn.innerHTML = "押せ！！！";
+    }
+    if (btn.dataset.type === "taunt") {
+      btn.innerHTML = taunts[Math.floor(Math.random() * taunts.length)];
+    }
+  }
+
+  function handleClick(btn) {
+    pressCount++;
+    lastKnownKm = kmNow();
+
+    if (btn.dataset.type === "distance") {
+      showComment(`${lastKnownKm.toFixed(1)} km 進んだ`);
+    }
+
+    if (btn.dataset.type === "record") {
+      showComment(
+        `ボタンを ${pressCount} 回押した<br>` +
+        `進んだ距離：${lastKnownKm.toFixed(1)} km`
+      );
+    }
+
+    if (btn.dataset.type === "progress") {
+      showComment(
+        `たぶん<br>${lastKnownKm.toFixed(1)} km<br>くらい`
+      );
+    }
+
+    if (btn.dataset.type === "taunt") {
+      showComment(
+        taunts[Math.floor(Math.random() * taunts.length)]
+      );
+    }
+
+    btn.remove();
+    currentBtn = null;
+  }
+
   window.addEventListener("scroll", () => {
     const bottom = scrollY + innerHeight;
     const height = document.body.offsetHeight;
 
-    distanceEl.textContent = `進行距離：${Math.floor(scrollY)}m`;
-
     if (height - bottom < 600) addSection();
 
-    if (!currentBtn && Math.random() < 0.02) {
-      showRandomButton();
+    if (!currentBtn && Math.random() < 0.025) {
+      spawnButton();
     }
 
-    /* ボタン追従 → 消失 */
     if (currentBtn) {
-      const diff = scrollY - btnAppearScroll;
-
-      let follow;
-      if (diff < 120) {
-        follow = diff * 0.9;
-      } else {
-        follow = 120 * 0.9 - (diff - 120) * 0.5;
-      }
-
-      currentBtn.style.transform = `translateY(${follow}px)`;
-      currentBtn.style.opacity = Math.max(1 - diff / 260, 0);
-
-      if (diff > 300) {
-        currentBtn.style.display = "none";
-        currentBtn = null;
-      }
+      const diff = scrollY - baseScroll;
+      const follow = diff < 120 ? diff * 0.6 : 120 * 0.6;
+      currentBtn.style.top = baseTop + follow + "px";
     }
   });
-
-  /* 押せ */
-  document.getElementById("actionBtn").onclick = () => {
-    count++;
-    currentBtn.style.display = "none";
-    currentBtn = null;
-
-    showComment(
-      Math.random() < 0.5
-        ? messages[Math.floor(Math.random() * messages.length)]
-        : `押した回数：${count}`
-    );
-  };
-
-  /* 長くする */
-  document.getElementById("growBtn").onclick = () => {
-    currentBtn.style.display = "none";
-    currentBtn = null;
-
-    const n = Math.floor(Math.random() * 3) + 1;
-    for (let i = 0; i < n; i++) addSection();
-
-    showComment("遠くなったーー");
-  };
-
-  /* 短くする */
-  document.getElementById("shrinkBtn").onclick = () => {
-    currentBtn.style.display = "none";
-    currentBtn = null;
-
-    const n = Math.floor(Math.random() * 3) + 1;
-    for (let i = 0; i < n; i++) {
-      if (tunnel.children.length > 2) {
-        tunnel.removeChild(tunnel.lastElementChild);
-      }
-    }
-
-    showComment("近づいたと思った？");
-  };
 </script>
 
 </body>
