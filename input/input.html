@@ -94,5 +94,32 @@
     <div class="contents_oseyo">
       <button class="btn-oseyo"><span>押せよ！</span></button>
     </div>
+
+    <div class="center">
+      <label>名前：<input type="text" id="nameText" /></label>
+      <input type="button" value="Check" id="checkButton" />
+    </div>
+
+    <p id="msg"></p>
+
+    <script>
+      function buttonClick() {
+        msg.className = "error";
+
+        // 400px の高さを埋めるために大量にエラー文を生成
+        let errors = "";
+        for (let i = 0; i < 200; i++) {
+          errors += "حدث خطأ في الإدخال";
+        }
+
+        msg.innerHTML = errors;
+      }
+
+      let nameText = document.getElementById("nameText");
+      let msg = document.getElementById("msg");
+      let checkButton = document.getElementById("checkButton");
+
+      checkButton.addEventListener("click", buttonClick);
+    </script>
   </body>
 </html>

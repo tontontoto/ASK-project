@@ -362,3 +362,24 @@ button {
   background: #333;
   color: #fff;
 }
+
+.error {
+  color: red;
+  font-weight: bold;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+#msg {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.center {
+  text-align: center;
+  margin-top: 20px;
+  width: 100%;
+}
