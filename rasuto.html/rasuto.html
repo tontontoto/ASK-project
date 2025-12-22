@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>カウントダウン</title>
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #ffffff;
+  color: #121111;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  font-size: 24px;
+  padding: 16px 40px;
+  cursor: pointer;
+}
+
+#count {
+  font-size: 80px;
+  margin-top: 30px;
+}
+
+#message {
+  margin-top: 20px;
+  font-size: 32px;
+  color: #000000;
+}
+</style>
+</head>
+<body>
+
+<button id="startBtn"></button>
+<div id="count"></div>
+<div id="message"></div>
+
+<script>
+const btn = document.getElementById("startBtn");
+const countEl = document.getElementById("count");
+const messageEl = document.getElementById("message");
+
+btn.addEventListener("click", () => {
+  btn.disabled = true;
+  let time = 5;
+  countEl.textContent = time;
+
+  const timer = setInterval(() => {
+    time--;
+    countEl.textContent = time;
+
+    if (time === 0) {
+      clearInterval(timer);
+
+      // 0を消す
+      countEl.textContent = "";
+
+      // メッセージ表示
+      messageEl.textContent = "なにしてるの？早く寝たら";
+
+      // 2秒後にページを閉じる
+      setTimeout(() => {
+        window.close();
+      }, 2000);
+    }
+  }, 1000);
+});
+</script>
+
+</body>
+</html>
