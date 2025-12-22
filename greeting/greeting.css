@@ -1,0 +1,13 @@
+/* 「こんにちは」テキスト表示コンポーネントのスタイル */
+.entrance-section {
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+}
+
+.greeting-text {
+    font-size: 4rem;
+    font-weight: normal;
+    text-align: center;
+    margin: 0;
+    color: #333;
+}
+

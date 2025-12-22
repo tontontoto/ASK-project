@@ -1,0 +1,46 @@
+.countdown-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 50px 20px;
+}
+
+.countdown-start-btn {
+  font-size: 24px;
+  padding: 16px 40px;
+  cursor: pointer;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.countdown-start-btn:hover:not(:disabled) {
+  background: #555;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.countdown-start-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.countdown-count {
+  font-size: 80px;
+  margin-top: 30px;
+  font-weight: bold;
+  color: #121111;
+}
+
+.countdown-message {
+  margin-top: 20px;
+  font-size: 32px;
+  color: #000000;
+  text-align: center;
+}
+

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- GoogleFont -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Dela+Gothic+One&family=DotGothic16&family=Noto+Color+Emoji&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Shippori+Mincho&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Adobefont -->
+    <script>
+      (function (d) {
+        var config = {
+            kitId: "jge0elo",
+            scriptTimeout: 3000,
+            async: true,
+          },
+          h = d.documentElement,
+          t = setTimeout(function () {
+            h.className =
+              h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+          }, config.scriptTimeout),
+          tk = d.createElement("script"),
+          f = false,
+          s = d.getElementsByTagName("script")[0],
+          a;
+        h.className += " wf-loading";
+        tk.src = "https://use.typekit.net/" + config.kitId + ".js";
+        tk.async = true;
+        tk.onload = tk.onreadystatechange = function () {
+          a = this.readyState;
+          if (f || (a && a != "complete" && a != "loaded")) return;
+          f = true;
+          clearTimeout(t);
+          try {
+            Typekit.load(config);
+          } catch (e) {}
+        };
+        s.parentNode.insertBefore(tk, s);
+      })(document);
+    </script>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="contents">
+      <input type="text" />
+      <input type="button" value="NEWUPDATE" class="newupdate-btn" />
+      <button class="newupdate-btn">NEWUPDATE</button>
+      <p class="emoji jumping-element">😍🥺✌</p>
+    </div>
+    <div class="contents_pop">
+      <input
+        type="button"
+        value="押す覚悟があるなら押してみな？"
+        class="btn-try"
+      />
+      <img src="images/tiger.png" alt="トラの画像" class="tiger_img" />
+    </div>
+
+    <div class="contents_modern">
+      <div class="box">
+        <p class="title">大変お買い得になっています!</p>
+        <p class="en">国産若鳥200g3パック698円</p>
+        <img
+          src="images/yobikomikun.jpg"
+          alt="ホバー画像"
+          class="hover-image"
+        />
+      </div>
+    </div>
+
+    <div class="contents_get">
+      <input type="button" value="ポ〇モンゲットだぜ！" class="get-btn" />
+    </div>
+
+    <div class="contents_banner">
+      <a
+        href="https://www.rakuten-card.co.jp/service/app/cardman/"
+        target="_blank"
+      >
+        <img src="images/banner.png" alt="" />
+      </a>
+    </div>
+    <div class="contents_omikuji">
+      <div class="btn-13">
+        <input type="button" value="おみくじ！" class="btn-13-input" />
+      </div>
+    </div>
+
+    <div class="contents_oseyo">
+      <button class="btn-oseyo"><span>押せよ！</span></button>
+    </div>
+  </body>
+</html>
