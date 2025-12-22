@@ -383,3 +383,52 @@ button {
   margin-top: 20px;
   width: 100%;
 }
+
+#nameText {
+  font-family: "Noto Serif JP", serif;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+
+  width: 320px; /* ← 大きめの枠 */
+  padding: 14px 10px; /* ← 余白しっかり */
+
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #333; /* ← 線を少し太くして存在感 */
+
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#nameText:focus {
+  border-bottom-color: #1823ff; /* ← フォーカス時の色変化 */
+  padding-left: 14px; /* ← スッと動く気持ちよさ */
+}
+
+#nameText::placeholder {
+  color: #aaa;
+  letter-spacing: 0.05em;
+}
+
+#checkButton {
+  font-family: "Noto Serif JP", serif;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+
+  padding: 10px 26px;
+  margin-left: 20px;
+
+  background: #f5f5f5; /* 初期色：薄いグレー */
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 6px; /* 角を少し丸く */
+  cursor: pointer;
+
+  transition: 0.3s ease, color 0.3s ease;
+}
+
+/* hover で色が変わる */
+#checkButton:hover {
+  background: #1823ff; /* 濃い青 */
+  color: #fff; /* 白文字 */
+}
