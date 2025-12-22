@@ -10,13 +10,17 @@
     background: #111;
     color: #fff;
     font-family: sans-serif;
+    overflow-x: hidden;
   }
 
+  /* 無限空間 */
+  .section {
+    height: 100vh;
+  }
+
+  /* ボタン */
   #actionBtn {
     position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
     padding: 14px 32px;
     font-size: 16px;
     background: #e63946;
@@ -25,8 +29,10 @@
     cursor: pointer;
     display: none;
     z-index: 10;
+    white-space: nowrap;
   }
 
+  /* コメント */
   #comment {
     position: fixed;
     top: 50%;
@@ -37,15 +43,12 @@
     pointer-events: none;
     transition: opacity .3s, transform .3s;
     z-index: 20;
+    text-align: center;
   }
 
   #comment.show {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.05);
-  }
-
-  .section {
-    height: 100vh;
   }
 </style>
 </head>
@@ -53,8 +56,6 @@
 
 <button id="actionBtn">押せ</button>
 <div id="comment"></div>
-
-<!-- 最初の空間 -->
 <div id="tunnel"></div>
 
 <script>
@@ -67,40 +68,54 @@
 
   const messages = [
     "まだ終わらない",
-    "ここも同じだ",
-    "進んだ気がした？",
     "戻れない",
-    "出口はない"
+    "進んだ気がした？",
+    "同じ場所だ",
+    "出口はない",
+    "よく押したな"
   ];
 
-  // セクションを追加する関数
+  /* ===== 無限セクション生成 ===== */
   function addSection() {
     const sec = document.createElement("div");
     sec.className = "section";
     tunnel.appendChild(sec);
   }
 
-  // 初期セクション
-  for (let i = 0; i < 3; i++) addSection();
+  // 初期生成
+  for (let i = 0; i < 4; i++) addSection();
 
-  // 無限生成
+  /* ===== ボタン位置ランダム ===== */
+  function randomizeButtonPosition() {
+    const w = btn.offsetWidth;
+    const h = btn.offsetHeight;
+
+    const x = Math.random() * (window.innerWidth - w);
+    const y = Math.random() * (window.innerHeight - h);
+
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+  }
+
+  /* ===== スクロール監視 ===== */
   window.addEventListener("scroll", () => {
-    const scrollBottom =
-      window.scrollY + window.innerHeight;
+    const scrollBottom = window.scrollY + window.innerHeight;
     const pageHeight = document.body.offsetHeight;
 
-    // 下の方に来たら追加
-    if (pageHeight - scrollBottom < 500) {
+    // 下に来たら無限追加
+    if (pageHeight - scrollBottom < 600) {
       addSection();
     }
 
-    // たまにボタン出現
+    // ランダムでボタン出現
     if (!shown && Math.random() < 0.005) {
+      randomizeButtonPosition();
       btn.style.display = "block";
       shown = true;
     }
   });
 
+  /* ===== ボタン押下 ===== */
   btn.addEventListener("click", () => {
     count++;
     btn.style.display = "none";
