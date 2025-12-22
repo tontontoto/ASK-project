@@ -7,29 +7,40 @@
 <style>
   body {
     margin: 0;
-    background: #111;
-    color: #fff;
+    background: #fff;
+    color: #000;
     font-family: sans-serif;
     overflow-x: hidden;
   }
 
-  /* 無限空間 */
   .section {
     height: 100vh;
   }
 
-  /* ボタン */
-  #actionBtn {
+  /* ボタン共通 */
+  button {
     position: fixed;
     padding: 14px 32px;
-    font-size: 16px;
-    background: #e63946;
+    font-size: 15px;
+    background: #000;
+    color: #fff;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     display: none;
     z-index: 10;
     white-space: nowrap;
+  }
+
+  /* 距離表示 */
+  #distance {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    z-index: 30;
   }
 
   /* コメント */
@@ -54,86 +65,128 @@
 </head>
 <body>
 
-<button id="actionBtn">押せ</button>
+<div id="distance">進行距離：0m</div>
+
+<button id="actionBtn">押せや</button>
+<button id="growBtn">長くする</button>
+<button id="shrinkBtn">短くする</button>
+
 <div id="comment"></div>
 <div id="tunnel"></div>
 
 <script>
   const tunnel = document.getElementById("tunnel");
-  const btn = document.getElementById("actionBtn");
   const comment = document.getElementById("comment");
+  const distanceEl = document.getElementById("distance");
+
+  const actionBtn = document.getElementById("actionBtn");
+  const growBtn   = document.getElementById("growBtn");
+  const shrinkBtn = document.getElementById("shrinkBtn");
+
+  const buttons = [actionBtn, growBtn, shrinkBtn];
 
   let count = 0;
-  let shown = false;
+  let currentBtn = null;
 
   const messages = [
-    "まだ終わらない",
-    "戻れない",
-    "進んだ気がした？",
-    "同じ場所だ",
-    "出口はない",
+    "まだ終わらないよ？",
+    "戻ろうとしてんの？",
+    "進んだ気がした？ｗ",
+    "同じ場所だあああ",
+    "出口はないけど、",
     "よく押したな"
   ];
 
-  /* ===== 無限セクション生成 ===== */
+  /* セクション生成 */
   function addSection() {
     const sec = document.createElement("div");
     sec.className = "section";
     tunnel.appendChild(sec);
   }
 
-  // 初期生成
+  // 初期セクション
   for (let i = 0; i < 4; i++) addSection();
 
-  /* ===== ボタン位置ランダム ===== */
-  function randomizeButtonPosition() {
-    const w = btn.offsetWidth;
-    const h = btn.offsetHeight;
+  // ボタンの位置をランダム
+function randomPos(btn) {
+  btn.style.left =
+    Math.random() * (innerWidth - btn.offsetWidth) + "px";
+  btn.style.top =
+    Math.random() * (innerHeight - btn.offsetHeight) + "px";
+}
 
-    const x = Math.random() * (window.innerWidth - w);
-    const y = Math.random() * (window.innerHeight - h);
 
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
+  function showComment(text, time = 1500) {
+    comment.textContent = text;
+    comment.classList.add("show");
+    setTimeout(() => comment.classList.remove("show"), time);
   }
 
-  /* ===== スクロール監視 ===== */
+  /* ランダムで1個だけ出す */
+  function showRandomButton() {
+    if (currentBtn) return;
+    const btn = buttons[Math.floor(Math.random() * buttons.length)];
+    randomPos(btn);
+    btn.style.display = "block";
+    currentBtn = btn;
+  }
+
+  /* スクロール監視 */
   window.addEventListener("scroll", () => {
-    const scrollBottom = window.scrollY + window.innerHeight;
-    const pageHeight = document.body.offsetHeight;
+    const bottom = scrollY + innerHeight;
+    const height = document.body.offsetHeight;
 
-    // 下に来たら無限追加
-    if (pageHeight - scrollBottom < 600) {
-      addSection();
-    }
+    // 距離表示更新
+    distanceEl.textContent = `進行距離：${Math.floor(scrollY)}m`;
 
-    // ランダムでボタン出現
-    if (!shown && Math.random() < 0.005) {
-      randomizeButtonPosition();
-      btn.style.display = "block";
-      shown = true;
+    // 無限スクロール
+    if (height - bottom < 600) addSection();
+
+    // 何も出ていなければ低確率で1個出す
+    if (!currentBtn && Math.random() < 0.02) {
+      showRandomButton();
     }
   });
 
-  /* ===== ボタン押下 ===== */
-  btn.addEventListener("click", () => {
+  /* 押せ */
+  actionBtn.onclick = () => {
     count++;
-    btn.style.display = "none";
+    actionBtn.style.display = "none";
+    currentBtn = null;
 
-    if (Math.random() < 0.5) {
-      comment.textContent =
-        messages[Math.floor(Math.random() * messages.length)];
-    } else {
-      comment.textContent = `押した回数：${count}`;
+    showComment(
+      Math.random() < 0.5
+        ? messages[Math.floor(Math.random() * messages.length)]
+        : `押した回数：${count}`,
+      2000
+    );
+  };
+
+  /* 伸ばす */
+  growBtn.onclick = () => {
+    growBtn.style.display = "none";
+    currentBtn = null;
+
+    const n = Math.floor(Math.random() * 3) + 1;
+    for (let i = 0; i < n; i++) addSection();
+
+    showComment("よくおしたな");
+  };
+
+  /* 縮める */
+  shrinkBtn.onclick = () => {
+    shrinkBtn.style.display = "none";
+    currentBtn = null;
+
+    const n = Math.floor(Math.random() * 3) + 1;
+    for (let i = 0; i < n; i++) {
+      if (tunnel.children.length > 2) {
+        tunnel.removeChild(tunnel.lastElementChild);
+      }
     }
 
-    comment.classList.add("show");
-
-    setTimeout(() => {
-      comment.classList.remove("show");
-      shown = false;
-    }, 2000);
-  });
+    showComment("短くなると思った？");
+  };
 </script>
 
 </body>
