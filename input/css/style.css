@@ -1,0 +1,364 @@
+@charset "utf-8";
+
+/*****共通部分
+***********************************************/
+body {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #333;
+  background: #e6e6e6;
+}
+
+html {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+/* input,
+button {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+} */
+
+.newupdate-btn {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  padding: 16px 24px;
+  font-size: 1.6rem;
+  letter-spacing: 0.12em;
+  border: solid 2px #1823ff;
+  background-color: #fff;
+  color: #1823ff;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.newupdate-btn:hover {
+  background: #1823ff;
+  color: #fff;
+}
+
+.emoji {
+  font-size: 5rem;
+}
+
+@keyframes jump-loop {
+  0% {
+    transform: translateY(0); /* 開始位置 */
+  }
+  50% {
+    transform: translateY(-20px); /* 跳ね上がる位置 */
+  }
+  100% {
+    transform: translateY(0); /* 元の位置に戻る */
+  }
+}
+
+.jumping-element {
+  animation-name: jump-loop;
+  animation-duration: 1s; /* 1秒で1往復 */
+  animation-iteration-count: infinite; /* 無限ループ */
+  animation-timing-function: ease-in-out;
+}
+
+.contents {
+  background: #f8ff3c;
+  border: solid 3px #000;
+  color: #000;
+  max-width: 600px;
+  padding: 5%;
+  margin: 0 auto;
+  border-radius: 16px;
+}
+
+.contents_pop {
+  background: #c7ff83;
+  border: solid 3px #000;
+  color: #000;
+  max-width: 800px;
+  padding: 5%;
+  margin: 0 auto;
+  border-radius: 16px;
+  margin-top: 5%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-try {
+  font-family: "Dela Gothic One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  white-space: normal;
+  padding: 20px;
+  font-size: 1.6rem;
+  letter-spacing: 0.05em;
+
+  background-color: #ff2167;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-try:hover {
+  transform: scale(1.05);
+}
+
+.tiger_img {
+  width: 300px;
+  height: auto;
+  display: block;
+  transition: transform 1s;
+  cursor: pointer;
+  transform-origin: center center;
+}
+
+.tiger_img:hover {
+  transform: rotate(360deg);
+}
+
+.contents_modern {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 400;
+  font-style: normal;
+  background: #ffffff;
+  border: solid 1px #000;
+  color: #000;
+  max-width: 800px;
+  padding: 5%;
+  margin: 0 auto;
+  border-radius: 16px;
+  margin-top: 5%;
+  display: flex;
+}
+
+.box {
+  position: relative;
+  width: 500px;
+  height: 250px;
+  overflow: hidden;
+  background: #4f6d9f;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.hover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.box:hover .hover-image {
+  opacity: 1;
+}
+
+.title {
+  font-size: 3rem;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  margin: 0;
+  padding-top: 50px;
+}
+
+.en {
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+
+.contents_get {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 400;
+  font-style: normal;
+  background: #ff8d1b;
+  border: solid 3px #000;
+  /* color: #000; */
+  max-width: 800px;
+  padding: 5%;
+  margin: 0 auto;
+  border-radius: 16px;
+  margin-top: 5%;
+  display: flex;
+}
+
+.get-btn {
+  font-family: "DotGothic16", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  display: block;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  font-size: 2rem;
+  width: 600px;
+  margin: auto;
+  padding: 1rem 4rem;
+  font-weight: bold;
+  border-radius: 0.3rem;
+  border-bottom: 7px solid #0686b2;
+  background: #27acd9;
+  color: #fff;
+}
+
+.get-btn:hover {
+  margin-top: 6px;
+  border-bottom: 1px solid #0686b2;
+  color: #fff;
+}
+
+.contents_banner {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 400;
+  background: #f890cd;
+  border: solid 3px #000;
+  max-width: 800px;
+  padding: 5%;
+  margin: 5% auto 0;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contents_banner img {
+  width: 600px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.contents_banner img:hover {
+  transform: scale(1.05);
+}
+.contents_omikuji {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 400;
+  font-style: normal;
+  background: #74cfd4;
+  border: solid 3px #000;
+  /* color: #000; */
+  max-width: 800px;
+  padding: 5%;
+  margin: 0 auto;
+  border-radius: 16px;
+  margin-top: 5%;
+  display: flex;
+}
+
+.btn-13 {
+  position: relative;
+  max-width: 180px;
+  margin: 24px auto;
+}
+
+.btn-13-input {
+  font-family: "Noto Serif JP", serif;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  color: #333;
+  font-weight: 400;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 4px 16px 4px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.3s;
+}
+
+/* 下線 */
+.btn-13::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: #333;
+  bottom: 0;
+  left: 0;
+  transition: all 0.3s;
+}
+
+/* 斜め線 */
+.btn-13::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 1px;
+  background: #333;
+  rotate: 40deg;
+  right: -3px;
+  bottom: 10px;
+  transition: all 0.3s;
+}
+
+/* hover アニメーション */
+.btn-13:hover::before,
+.btn-13:hover::after {
+  translate: 20px 0;
+}
+
+.contents_oseyo {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.contents_oseyo {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.btn-oseyo {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: #fff;
+  color: #333;
+  font-family: "kokuryu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+/* 文字だけアニメーション */
+.btn-oseyo span {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.btn-oseyo:hover span {
+  transform: scale(1.2);
+}
+
+.btn-oseyo:hover {
+  background: #333;
+  color: #fff;
+}
