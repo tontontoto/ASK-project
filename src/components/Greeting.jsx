@@ -1,10 +1,10 @@
 import React from 'react';
 import '../styles/greeting.css';
 
-const Greeting = () => {
+const Greeting = ({ message = 'こんにちは' }) => {
   return (
     <section className="entrance-section">
-      <h1 className="greeting-text">こんにちは</h1>
+      <h1 className="greeting-text">{message}</h1>
     </section>
   );
 };

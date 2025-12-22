@@ -1,0 +1,34 @@
+.btn-oseyo {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: #fff;
+  color: #333;
+  font-family: "kokuryu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+/* 文字だけアニメーション */
+.btn-oseyo span {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.btn-oseyo:hover span {
+  transform: scale(1.2);
+}
+
+.btn-oseyo:hover {
+  background: #333;
+  color: #fff;
+}
+

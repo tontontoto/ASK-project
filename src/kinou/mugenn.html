@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>えいえんトンネル</title>
+
+<style>
+  body {
+    margin: 0;
+    background: #fff;
+    color: #000;
+    font-family: sans-serif;
+    overflow-x: hidden;
+  }
+
+  .section {
+    height: 100vh;
+  }
+
+  /* ボタン共通 */
+  button {
+    position: fixed;
+    padding: 14px 32px;
+    font-size: 15px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: none;
+    z-index: 10;
+    white-space: nowrap;
+  }
+
+  /* 距離表示 */
+  #distance {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    z-index: 30;
+  }
+
+  /* コメント */
+  #comment {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s, transform .3s;
+    z-index: 20;
+    text-align: center;
+  }
+
+  #comment.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+</style>
+</head>
+<body>
+
+<div id="distance">進行距離：0m</div>
+
+<button id="actionBtn">押せや</button>
+<button id="growBtn">長くする</button>
+<button id="shrinkBtn">短くする</button>
+
+<div id="comment"></div>
+<div id="tunnel"></div>
+
+<script>
+  const tunnel = document.getElementById("tunnel");
+  const comment = document.getElementById("comment");
+  const distanceEl = document.getElementById("distance");
+
+  const actionBtn = document.getElementById("actionBtn");
+  const growBtn   = document.getElementById("growBtn");
+  const shrinkBtn = document.getElementById("shrinkBtn");
+
+  const buttons = [actionBtn, growBtn, shrinkBtn];
+
+  let count = 0;
+  let currentBtn = null;
+
+  const messages = [
+    "まだ終わらないよ？",
+    "戻ろうとしてんの？",
+    "進んだ気がした？ｗ",
+    "同じ場所だあああ",
+    "出口はないけど、",
+    "よく押したな"
+  ];
+
+  /* セクション生成 */
+  function addSection() {
+    const sec = document.createElement("div");
+    sec.className = "section";
+    tunnel.appendChild(sec);
+  }
+
+  // 初期セクション
+  for (let i = 0; i < 4; i++) addSection();
+
+  // ボタンの位置をランダム
+function randomPos(btn) {
+  btn.style.left =
+    Math.random() * (innerWidth - btn.offsetWidth) + "px";
+  btn.style.top =
+    Math.random() * (innerHeight - btn.offsetHeight) + "px";
+}
+
+
+  function showComment(text, time = 1500) {
+    comment.textContent = text;
+    comment.classList.add("show");
+    setTimeout(() => comment.classList.remove("show"), time);
+  }
+
+  /* ランダムで1個だけ出す */
+  function showRandomButton() {
+    if (currentBtn) return;
+    const btn = buttons[Math.floor(Math.random() * buttons.length)];
+    randomPos(btn);
+    btn.style.display = "block";
+    currentBtn = btn;
+  }
+
+  /* スクロール監視 */
+  window.addEventListener("scroll", () => {
+    const bottom = scrollY + innerHeight;
+    const height = document.body.offsetHeight;
+
+    // 距離表示更新
+    distanceEl.textContent = `進行距離：${Math.floor(scrollY)}m`;
+
+    // 無限スクロール
+    if (height - bottom < 600) addSection();
+
+    // 何も出ていなければ低確率で1個出す
+    if (!currentBtn && Math.random() < 0.02) {
+      showRandomButton();
+    }
+  });
+
+  /* 押せ */
+  actionBtn.onclick = () => {
+    count++;
+    actionBtn.style.display = "none";
+    currentBtn = null;
+
+    showComment(
+      Math.random() < 0.5
+        ? messages[Math.floor(Math.random() * messages.length)]
+        : `押した回数：${count}`,
+      2000
+    );
+  };
+
+  /* 伸ばす */
+  growBtn.onclick = () => {
+    growBtn.style.display = "none";
+    currentBtn = null;
+
+    const n = Math.floor(Math.random() * 3) + 1;
+    for (let i = 0; i < n; i++) addSection();
+
+    showComment("よくおしたな");
+  };
+
+  /* 縮める */
+  shrinkBtn.onclick = () => {
+    shrinkBtn.style.display = "none";
+    currentBtn = null;
+
+    const n = Math.floor(Math.random() * 3) + 1;
+    for (let i = 0; i < n; i++) {
+      if (tunnel.children.length > 2) {
+        tunnel.removeChild(tunnel.lastElementChild);
+      }
+    }
+
+    showComment("短くなると思った？");
+  };
+</script>
+
+</body>
+</html>
