@@ -1,11 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<title>えいえんトンネル</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 800vh; /* 長めにしておく */
+  background: #000;
+  color: #e0e0e0;
+  font-family: "Noto Sans JP", sans-serif;
+  overflow-x: hidden;
+}
+
+/* トンネル背景 */
+.tunnel {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    #111 0px,
+    #111 40px,
+    #000 40px,
+    #000 80px
+  );
+  animation: move 2s linear infinite;
+  z-index: -1;
+}
+
+@keyframes move {
+  from { background-position: 0 0; }
+  to   { background-position: 0 160px; }
+}
+
+/* UI */
+.ui {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  letter-spacing: .1em;
+}
+
+#distance {
+  font-size: 14px;
+  margin-bottom: 10px;
+  opacity: .8;
+}
+
+#message {
+  font-size: 16px;
+}
+
+/* ボタン */
+#toggleBtn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 16px;
+  background: #111;
+  color: #fff;
+  border: 1px solid #444;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+#toggleBtn.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+</style>
 </head>
+
 <body>
-    
+
+<div class="tunnel"></div>
+
+<button id="toggleBtn">トンネルを伸ばす</button>
+
+<div class="ui">
+  <div id="distance">進んだ距離：0m</div>
+  <div id="message">……</div>
+</div>
+
+<script>
+/* ===== 設定 ===== */
+let isLong = true;
+const meterPerPixel = 0.2;
+let lastMessagePoint = 0;
+
+/* 煽り文（通常） */
+const messages = [
+  "まだ出口は見つかりません。",
+  "確実に進んでいます。",
+  "戻っても意味はありません。",
+  "今のは錯覚です。",
+  "少し景色が変わりました。",
+  "同じ場所ではありません。",
+  "出口は近い気がします。",
+  "判断は正しいです。",
+  "やめますか？",
+  "そのまま進んでください。"
+];
+
+/* ボタン用煽り文 */
+const buttonAori = [
+  "……なに押してんの？",
+  "それ、意味あると思った？",
+  "押したところで変わらないよ。",
+  "出口のボタンだと思った？",
+  "操作してる気になりたいだけでしょ。",
+  "押す前より、今の方が不安でしょ。"
+];
+
+const btn = document.getElementById("toggleBtn");
+
+/* ===== スクロール検知 ===== */
+window.addEventListener("scroll", () => {
+  const scrollPx = window.scrollY;
+  const distance = Math.floor(scrollPx * meterPerPixel);
+
+  document.getElementById("distance").textContent =
+    `進んだ距離：${distance}m`;
+
+  // 一定距離で通常メッセージ
+  if (distance - lastMessagePoint >= 50) {
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    document.getElementById("message").textContent = msg;
+    lastMessagePoint = distance;
+  }
+
+  // スクロールしたらボタン出現
+  if (scrollPx > 200) {
+    btn.classList.add("show");
+  }
+});
+
+/* ===== ボタンを押した時 ===== */
+btn.addEventListener("click", () => {
+  const aori =
+    buttonAori[Math.floor(Math.random() * buttonAori.length)];
+
+  document.getElementById("message").textContent = aori;
+
+  // 押した感を無にする演出
+  btn.textContent = "……";
+});
+
+</script>
+
 </body>
 </html>
