@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>えいえんトンネル</title>
+
+<style>
+  body {
+    margin: 0;
+    background: #111;
+    color: #fff;
+    font-family: sans-serif;
+  }
+
+  #actionBtn {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 14px 32px;
+    font-size: 16px;
+    background: #e63946;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: none;
+    z-index: 10;
+  }
+
+  #comment {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s, transform .3s;
+    z-index: 20;
+  }
+
+  #comment.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  .section {
+    height: 100vh;
+  }
+</style>
+</head>
+<body>
+
+<button id="actionBtn">押せ</button>
+<div id="comment"></div>
+
+<!-- 最初の空間 -->
+<div id="tunnel"></div>
+
+<script>
+  const tunnel = document.getElementById("tunnel");
+  const btn = document.getElementById("actionBtn");
+  const comment = document.getElementById("comment");
+
+  let count = 0;
+  let shown = false;
+
+  const messages = [
+    "まだ終わらない",
+    "ここも同じだ",
+    "進んだ気がした？",
+    "戻れない",
+    "出口はない"
+  ];
+
+  // セクションを追加する関数
+  function addSection() {
+    const sec = document.createElement("div");
+    sec.className = "section";
+    tunnel.appendChild(sec);
+  }
+
+  // 初期セクション
+  for (let i = 0; i < 3; i++) addSection();
+
+  // 無限生成
+  window.addEventListener("scroll", () => {
+    const scrollBottom =
+      window.scrollY + window.innerHeight;
+    const pageHeight = document.body.offsetHeight;
+
+    // 下の方に来たら追加
+    if (pageHeight - scrollBottom < 500) {
+      addSection();
+    }
+
+    // たまにボタン出現
+    if (!shown && Math.random() < 0.005) {
+      btn.style.display = "block";
+      shown = true;
+    }
+  });
+
+  btn.addEventListener("click", () => {
+    count++;
+    btn.style.display = "none";
+
+    if (Math.random() < 0.5) {
+      comment.textContent =
+        messages[Math.floor(Math.random() * messages.length)];
+    } else {
+      comment.textContent = `押した回数：${count}`;
+    }
+
+    comment.classList.add("show");
+
+    setTimeout(() => {
+      comment.classList.remove("show");
+      shown = false;
+    }, 2000);
+  });
+</script>
+
+</body>
+</html>
