@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>煽り文サイト</title>
+
+<style>
+/* ===== リセット ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  line-height: 1.8;
+}
+
+/* ===== ダミーコンテンツ ===== */
+.section {
+  height: 120vh;
+  padding: 80px;
+  font-size: 24px;
+}
+
+/* ===== スクロールボタン ===== */
+#scrollBtn {
+  position: fixed;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 40px;
+  font-size: 16px;
+  letter-spacing: .2em;
+  background: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+
+  transition: bottom 0.5s ease;
+  z-index: 1000;
+}
+
+#scrollBtn.active {
+  bottom: 40px;
+}
+
+/* ===== 背景暗転 ===== */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 999;
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== 中央メッセージ ===== */
+#message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  font-size: 56px;
+  font-weight: bold;
+  letter-spacing: .15em;
+  color: #fff;
+
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1001;
+}
+
+#message.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="section">
+  下へスクロールしてください
+</div>
+
+<div class="section">
+  まだ続く
+</div>
+
+<button id="scrollBtn">押す</button>
+
+<div id="overlay"></div>
+<div id="message">逃げるな。</div>
+
+<script>
+const scrollBtn = document.getElementById("scrollBtn");
+const message = document.getElementById("message");
+const overlay = document.getElementById("overlay");
+
+/* スクロールでボタン出現 */
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 300) {
+    scrollBtn.classList.add("active");
+  } else {
+    scrollBtn.classList.remove("active");
+  }
+});
+
+/* クリックで表示 */
+scrollBtn.addEventListener("click", () => {
+  overlay.classList.add("active");
+  message.classList.add("active");
+
+  /* 3秒後に消える */
+  setTimeout(() => {
+    overlay.classList.remove("active");
+    message.classList.remove("active");
+  }, 3000);
+});
+</script>
+
+</body>
+</html>
